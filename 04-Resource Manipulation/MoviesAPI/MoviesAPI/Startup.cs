@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,11 +31,18 @@ namespace MoviesAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<MoviesDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("MoviesAPIDb"));
+            });
+
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddTransient<IFileStorageService, AzureStorageService>();
+
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(MyExceptionFilter));
             }).AddXmlDataContractSerializerFormatters();
-            services.AddSingleton<IRepository, InMemoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
