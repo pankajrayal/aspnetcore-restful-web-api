@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
+using MoviesAPI.Helpers;
 using MoviesAPI.Services;
 using System;
 using System.Collections.Generic;
@@ -31,9 +33,12 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PersonDTO>>> Get() 
+        public async Task<ActionResult<List<PersonDTO>>> Get([FromQuery] PaginationDTO pagination) 
         {
-            var people = await _context.People.ToListAsync();
+            var queryable = _context.People.AsQueryable();
+            await HttpContext.InsertPaginationParemetersInResponse(queryable, pagination.RecordsPerPage);
+
+            var people = await queryable.Paginate(pagination).ToListAsync();
             return _mapper.Map<List<PersonDTO>>(people);
         }
 
@@ -70,5 +75,75 @@ namespace MoviesAPI.Controllers
             var personDTO = _mapper.Map<PersonDTO>(person);
             return new CreatedAtRouteResult("getPerson", new { id = person.Id }, personDTO);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromForm] PersonCreationDTO personCreationDTO)
+        {
+            var personDB = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
+            
+            if(personDB == null) { return NotFound(); }
+
+            personDB = _mapper.Map<Person>(personCreationDTO);
+            if(personCreationDTO.Picture != null)
+            {
+                using(var memoryStream = new MemoryStream())
+                {
+                    await personCreationDTO.Picture.CopyToAsync(memoryStream);
+                    var content = memoryStream.ToArray();
+                    var extension = Path.GetExtension(personCreationDTO.Picture.FileName);
+                    personDB.Picture = await _fileStorageService.EditFile(content, extension,
+                        containerName, personDB.Picture, personCreationDTO.Picture.ContentType);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return NoContent();
+
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<PersonPatchDTO> patchDocument)
+        {
+            if(patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var entityFromDB = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(entityFromDB == null)
+            {
+                return NotFound();
+            }
+
+            var entityDTO = _mapper.Map<PersonPatchDTO>(entityFromDB);
+            patchDocument.ApplyTo(entityDTO, ModelState);
+
+            var isValid = TryValidateModel(entityDTO);
+
+            if(!isValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(entityDTO, entityFromDB);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var exists = await _context.People.AnyAsync(x => x.Id == id);
+            if(!exists)
+            {
+                return NotFound();
+            }
+            _context.Remove(new Person() { Id = id });
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
     }
 }

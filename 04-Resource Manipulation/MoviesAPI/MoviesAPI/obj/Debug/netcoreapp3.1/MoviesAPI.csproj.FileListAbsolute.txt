@@ -113,3 +113,6 @@ E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation
 E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\Microsoft.Azure.KeyVault.Core.dll
 E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\Microsoft.Azure.Storage.Blob.dll
 E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\Microsoft.Azure.Storage.Common.dll
+E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\Learning\Code\ASP.NetCore\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
