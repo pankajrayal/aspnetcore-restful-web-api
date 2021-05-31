@@ -86,14 +86,17 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet("{id}", Name = "getMovie")]
-        public async Task<ActionResult<MovieDTO>> Get(int id)
+        public async Task<ActionResult<MovieDetailsDTO>> Get(int id)
         {
-            var movie = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            var movie = await _context.Movies
+                .Include(x => x.MoviesActors).ThenInclude(x => x.Person)
+                .Include(x=>x.MoviesGenres).ThenInclude(x=>x.Genre)
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (movie == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<MovieDTO>(movie);
+            return _mapper.Map<MovieDetailsDTO>(movie);
         }
 
         [HttpPost]
