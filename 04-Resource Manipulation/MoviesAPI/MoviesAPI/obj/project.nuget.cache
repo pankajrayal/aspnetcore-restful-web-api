@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AlKhGcda0xoUzGax2X4WYUN29Ilx3IFASh/NsU3miFBFLW4oMxhXwNw6x9UE9Eic6NfuA8cX85j5pUOgL1vw2w==",
+  "dgSpecHash": "2vA7nnl5ja6n0vlDmd8eqcTnpelQJoHGQQbwI0zXDmZJaYERfA50cKdH8GQoDYM4Q/I0cPr5teHULd9+JC/ebg==",
   "success": true,
   "projectFilePath": "C:\\Users\\prayal\\Desktop\\Personal\\Learning\\Current\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\MoviesAPI.csproj",
   "expectedPackageFiles": [
@@ -72,6 +72,7 @@
     "C:\\Users\\prayal\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\prayal\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\prayal\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
+    "C:\\Users\\prayal\\.nuget\\packages\\system.linq.dynamic.core\\1.2.10\\system.linq.dynamic.core.1.2.10.nupkg.sha512",
     "C:\\Users\\prayal\\.nuget\\packages\\system.net.nameresolution\\4.3.0\\system.net.nameresolution.4.3.0.nupkg.sha512",
     "C:\\Users\\prayal\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\prayal\\.nuget\\packages\\system.private.datacontractserialization\\4.3.0\\system.private.datacontractserialization.4.3.0.nupkg.sha512",

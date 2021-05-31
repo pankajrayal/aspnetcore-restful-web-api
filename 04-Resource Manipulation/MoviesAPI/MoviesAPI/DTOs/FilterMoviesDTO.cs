@@ -18,5 +18,8 @@ namespace MoviesAPI.DTOs
         public int GenreId { get; set; }
         public bool InTheaters { get; set; }
         public bool UpcomingReleses { get; set; }
+
+        public string OrderingField { get; set; }
+        public bool AscendingOrder { get; set; }
     }
 }

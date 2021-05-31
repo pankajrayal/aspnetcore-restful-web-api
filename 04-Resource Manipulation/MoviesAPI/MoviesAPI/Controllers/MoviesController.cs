@@ -12,6 +12,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
+using Microsoft.Extensions.Logging;
 
 namespace MoviesAPI.Controllers
 {
@@ -22,13 +24,15 @@ namespace MoviesAPI.Controllers
         private readonly MoviesDbContext _context;
         private readonly IMapper _mapper;
         private readonly IFileStorageService _fileStorageService;
+        private readonly ILogger<MoviesController> _logger;
         private readonly string containerName = "movies";
 
-        public MoviesController(MoviesDbContext context, IMapper mapper, IFileStorageService fileStorageService)
+        public MoviesController(MoviesDbContext context, IMapper mapper, IFileStorageService fileStorageService, ILogger<MoviesController> logger)
         {
             _context = context;
             _mapper = mapper;
             _fileStorageService = fileStorageService;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -77,6 +81,38 @@ namespace MoviesAPI.Controllers
                 moviesQueryable = moviesQueryable
                     .Where(x => x.MoviesGenres.Select(y => y.GenreId).Contains(filterMoviesDTO.GenreId));
             }
+
+            //if(!string.IsNullOrWhiteSpace(filterMoviesDTO.OrderingField))
+            //{
+            //    if(filterMoviesDTO.OrderingField == "title")
+            //    {
+            //        if (filterMoviesDTO.AscendingOrder)
+            //        {
+            //            moviesQueryable = moviesQueryable.OrderBy(x => x.Title);
+            //        }
+            //        else 
+            //        {
+            //            moviesQueryable = moviesQueryable.OrderByDescending(x => x.Title);
+            //        }
+            //    }
+            //}
+
+            if(!string.IsNullOrWhiteSpace(filterMoviesDTO.OrderingField))
+            {
+                try
+                {
+                    moviesQueryable = moviesQueryable
+                        .OrderBy($"{filterMoviesDTO.OrderingField} {(filterMoviesDTO.AscendingOrder ? "ascending" : "descending")}");
+
+                }
+                catch (Exception)
+                {
+                    // error
+                    _logger.LogWarning("Couldn't order by firle: " + filterMoviesDTO.OrderingField);
+                }
+
+            }
+
 
             await HttpContext.InsertPaginationParametersInResponse(moviesQueryable, 
                 filterMoviesDTO.RecordsPerPage);

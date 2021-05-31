@@ -186,3 +186,4 @@ C:\Users\prayal\Desktop\Personal\Learning\Current\aspnetcore-restful-web-api\04-
 C:\Users\prayal\Desktop\Personal\Learning\Current\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\obj\Debug\netcoreapp3.1\MoviesAPI.RazorTargetAssemblyInfo.cache
 C:\Users\prayal\Desktop\Personal\Learning\Current\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\obj\Debug\netcoreapp3.1\MoviesAPI.csproj.CopyComplete
 C:\Users\prayal\Desktop\Personal\Learning\Current\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\obj\Debug\netcoreapp3.1\MoviesAPI.genruntimeconfig.cache
+C:\Users\prayal\Desktop\Personal\Learning\Current\aspnetcore-restful-web-api\04-Resource Manipulation\MoviesAPI\MoviesAPI\bin\Debug\netcoreapp3.1\System.Linq.Dynamic.Core.dll
