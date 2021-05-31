@@ -63,10 +63,22 @@ namespace MoviesAPI.Controllers
                         movieCreationDTO.Poster.ContentType);
                 }
             }
+            AnnotateActorsOrder(movie);
             _context.Add(movie);
             await _context.SaveChangesAsync();
             var movieDTO = _mapper.Map<MovieDTO>(movie);
             return new CreatedAtRouteResult("getMovie", new { id = movie.Id }, movieDTO);
+        }
+
+        private static void AnnotateActorsOrder(Movie movie)
+        {
+            if(movie.MoviesActors !=null)
+            {
+                for(int i=0;i<movie.MoviesActors.Count; i++)
+                {
+                    movie.MoviesActors[i].Order = i;
+                }
+            }
         }
 
         [HttpPut("{id}")]
@@ -91,6 +103,10 @@ namespace MoviesAPI.Controllers
                         movieDB.Poster, movieCreationDTO.Poster.ContentType);
                 }
             }
+
+             _context.Database.ExecuteSqlRaw($"DELETE FROM MoviesActors WHERE MovieId = ${movieDB.Id}; DELETE FROM MoviesGenres WHERE MovieId = ${movieDB.Id};");
+            AnnotateActorsOrder(movieDB);
+
             await _context.SaveChangesAsync();
             return NoContent();
         }

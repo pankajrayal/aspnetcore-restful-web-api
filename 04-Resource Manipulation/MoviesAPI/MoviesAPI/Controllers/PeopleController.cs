@@ -36,7 +36,7 @@ namespace MoviesAPI.Controllers
         public async Task<ActionResult<List<PersonDTO>>> Get([FromQuery] PaginationDTO pagination) 
         {
             var queryable = _context.People.AsQueryable();
-            await HttpContext.InsertPaginationParemetersInResponse(queryable, pagination.RecordsPerPage);
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
 
             var people = await queryable.Paginate(pagination).ToListAsync();
             return _mapper.Map<List<PersonDTO>>(people);

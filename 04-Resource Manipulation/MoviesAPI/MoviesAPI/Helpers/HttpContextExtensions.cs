@@ -10,7 +10,7 @@ namespace MoviesAPI.Helpers
 {
     public static class HttpContextExtensions
     {
-        public async static Task InsertPaginationParemetersInResponse<T>(this HttpContext httpContext,
+        public async static Task InsertPaginationParametersInResponse<T>(this HttpContext httpContext,
             IQueryable<T> queryable, int recordsPerPage)
         {
             if (httpContext == null)

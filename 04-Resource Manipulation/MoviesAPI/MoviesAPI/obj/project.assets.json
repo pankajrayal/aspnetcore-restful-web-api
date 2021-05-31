@@ -5755,23 +5755,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PANKAJ RAYAL\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\prayal\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Learning\\Code\\ASP.NetCore\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\MoviesAPI.csproj",
+      "projectUniqueName": "C:\\Users\\prayal\\Desktop\\Personal\\Learning\\Current\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\MoviesAPI.csproj",
       "projectName": "MoviesAPI",
-      "projectPath": "E:\\Learning\\Code\\ASP.NetCore\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\MoviesAPI.csproj",
-      "packagesPath": "C:\\Users\\PANKAJ RAYAL\\.nuget\\packages\\",
-      "outputPath": "E:\\Learning\\Code\\ASP.NetCore\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\obj\\",
+      "projectPath": "C:\\Users\\prayal\\Desktop\\Personal\\Learning\\Current\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\MoviesAPI.csproj",
+      "packagesPath": "C:\\Users\\prayal\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\prayal\\Desktop\\Personal\\Learning\\Current\\aspnetcore-restful-web-api\\04-Resource Manipulation\\MoviesAPI\\MoviesAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\PANKAJ RAYAL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\prayal\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -5843,7 +5848,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   }

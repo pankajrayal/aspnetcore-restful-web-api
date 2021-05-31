@@ -43,7 +43,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet("{Id:int}", Name = "getGenre")] // api/genres/example
-        public async Task<ActionResult<GenreDTO>> Get(int Id, string param2) {
+        public async Task<ActionResult<GenreDTO>> Get(int Id) {
             var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == Id);
 
             if (genre == null) {
