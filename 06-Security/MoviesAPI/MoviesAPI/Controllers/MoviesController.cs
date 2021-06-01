@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MoviesAPI.Controllers
 {
@@ -136,6 +138,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Post([FromForm] MovieCreationDTO movieCreationDTO)
         {
             var movie = _mapper.Map<Movie>(movieCreationDTO);
@@ -213,6 +216,8 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
         public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<MoviePatchDTO> patchDocument)
         {
             if (patchDocument == null)

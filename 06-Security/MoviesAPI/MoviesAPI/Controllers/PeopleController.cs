@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +57,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Post([FromForm] PersonCreationDTO personCreationDTO)
         {
             var person = _mapper.Map<Person>(personCreationDTO);
@@ -77,6 +80,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Put(int id, [FromForm] PersonCreationDTO personCreationDTO)
         {
             var personDB = await _context.People.FirstOrDefaultAsync(x => x.Id == id);
@@ -101,6 +105,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<PersonPatchDTO> patchDocument)
         {
             if(patchDocument == null)
@@ -133,6 +138,7 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var exists = await _context.People.AnyAsync(x => x.Id == id);

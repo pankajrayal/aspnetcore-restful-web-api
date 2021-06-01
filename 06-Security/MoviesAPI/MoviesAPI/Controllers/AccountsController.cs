@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MoviesAPI.DTOs;
+using MoviesAPI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,14 +25,20 @@ namespace MoviesAPI.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly MoviesDbContext _context;
+        private readonly IMapper _mapper;
 
         public AccountsController(UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            MoviesDbContext context,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _context = context;
+            _mapper = mapper;
         }
 
         [HttpPost("create")]
@@ -40,7 +49,7 @@ namespace MoviesAPI.Controllers
 
             if(result.Succeeded)
             {
-                return BuildToken(model);
+                return await BuildToken(model);
             }
             else
             {
@@ -56,7 +65,7 @@ namespace MoviesAPI.Controllers
 
             if(result.Succeeded)
             {
-                return BuildToken(model);
+                return await BuildToken(model);
             } else
             {
                 return BadRequest("Invalid login attempt");
@@ -65,18 +74,18 @@ namespace MoviesAPI.Controllers
 
         [HttpPost("renewToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public ActionResult<UserToken> Renew()
+        public async Task<ActionResult<UserToken>> Renew()
         {
             var userInfo = new UserInfo { 
                 EmailAddress = HttpContext.User.Identity.Name
             };
 
-            return BuildToken(userInfo);
+            return await BuildToken(userInfo);
         }
 
 
 
-        private UserToken BuildToken(UserInfo userInfo)
+        private async Task<UserToken> BuildToken(UserInfo userInfo)
         {
             var claims = new List<Claim>()
             {
@@ -85,10 +94,15 @@ namespace MoviesAPI.Controllers
                 new Claim("mykey", "whatever value I want")
             };
 
+            var identityUser = await _userManager.FindByEmailAsync(userInfo.EmailAddress);
+            var claimsDb = await _userManager.GetClaimsAsync(identityUser);
+
+            claims.AddRange(claimsDb);
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddMinutes(1);
+            var expiration = DateTime.UtcNow.AddMinutes(20);
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: null,
                 audience: null,
@@ -103,6 +117,53 @@ namespace MoviesAPI.Controllers
                 Expiration = expiration
             };
         }
-        
+
+        [HttpGet("users")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
+        {
+            var queryable = _context.Users.AsQueryable();
+            queryable = queryable.OrderBy(x => x.Email);
+            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
+            var users = await queryable.Paginate(paginationDTO).ToListAsync();
+
+            return _mapper.Map<List<UserDTO>>(users);
+        }
+
+        [HttpGet("roles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult<List<string>>> GetRoles()
+        {
+            return await _context.Roles.Select(x => x.Name).ToListAsync();
+        }
+
+        [HttpPost("AssignRole")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> AssignRole(EditRoleDTO editRoleDTO)
+        {
+            var user = await _userManager.FindByIdAsync(editRoleDTO.UserId);
+            if(user==null)
+            {
+                return NotFound();
+            }
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
+            //_userManager.AddToRoleAsync
+            return NoContent();
+        }
+
+        [HttpPost("RemoveRole")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> RemoveRole(EditRoleDTO editRoleDTO)
+        {
+            var user = await _userManager.FindByIdAsync(editRoleDTO.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            await _userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
+            return NoContent();
+        }
+
+
     }
 }
