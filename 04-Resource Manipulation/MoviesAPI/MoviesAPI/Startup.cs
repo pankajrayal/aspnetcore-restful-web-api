@@ -39,6 +39,7 @@ namespace MoviesAPI
 
             //services.AddTransient<IFileStorageService, AzureStorageService>();
             services.AddTransient<IFileStorageService, InAppStorageService>();
+            services.AddTransient<IHostedService, MoviesInTheatersService>();
             services.AddHttpContextAccessor();
 
             services.AddControllers(options =>
