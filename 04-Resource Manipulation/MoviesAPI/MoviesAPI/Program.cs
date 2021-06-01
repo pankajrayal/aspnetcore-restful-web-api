@@ -18,6 +18,10 @@ namespace MoviesAPI
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            //.ConfigureAppConfiguration((env, config) =>
+            //{
+            //    config.AddJsonFile("custom.json", optional: true, reloadOnChange: true);
+            //})
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureLogging(loggingBuilder =>
