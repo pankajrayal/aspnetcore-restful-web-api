@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -30,7 +31,8 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet] // api/genres
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [EnableCors(PolicyName = "AllowAPIRequestIO")]
         public async Task<ActionResult<List<GenreDTO>>> Get()
         {
             var genres = await _context.Genres.AsNoTracking().ToListAsync();
