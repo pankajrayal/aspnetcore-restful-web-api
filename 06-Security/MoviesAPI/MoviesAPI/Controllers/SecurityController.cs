@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using MoviesAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,13 @@ namespace MoviesAPI.Controllers
     public class SecurityController : ControllerBase
     {
         private readonly IDataProtector _protector;
-        public SecurityController(IDataProtectionProvider protectionProvider)
+        private readonly HashService _hashService;
+
+        public SecurityController(IDataProtectionProvider protectionProvider,
+            HashService hashService)
         {
             _protector = protectionProvider.CreateProtector("value_secret_and_unique");
+            _hashService = hashService;
         }
 
         [HttpGet]
@@ -37,6 +42,15 @@ namespace MoviesAPI.Controllers
             
             string decryptedText = protectorTimeBound.Unprotect(encryptedText);
             return Ok( new { plainText, encryptedText, decryptedText });
+        }
+
+        [HttpGet("hash")]
+        public IActionResult GetHash() 
+        {
+            var plainText = "Pankaj Rayal";
+            var hashResult1 = _hashService.Hash(plainText);
+            var hashResult2 = _hashService.Hash(plainText);
+            return Ok(new { plainText, hashResult1, hashResult2 });
         }
     }
 }

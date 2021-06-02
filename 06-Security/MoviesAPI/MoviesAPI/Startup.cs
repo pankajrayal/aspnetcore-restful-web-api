@@ -49,6 +49,8 @@ namespace MoviesAPI
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddTransient<HashService>();
+
             //services.AddTransient<IFileStorageService, AzureStorageService>();
             services.AddTransient<IFileStorageService, InAppStorageService>();
             services.AddTransient<IHostedService, MoviesInTheatersService>();
