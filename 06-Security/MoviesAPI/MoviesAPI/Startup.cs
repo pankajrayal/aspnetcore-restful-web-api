@@ -38,6 +38,8 @@ namespace MoviesAPI
                 options.UseSqlServer(Configuration.GetConnectionString("MoviesAPIDb"));
             });
 
+            services.AddDataProtection();
+
             services.AddCors(options=> {
                 options.AddPolicy("AllowAPIRequestIO", builder =>
                 {
