@@ -33,6 +33,7 @@ namespace MoviesAPI.Controllers
             return Ok(new { plainText, encryptedText, decryptedText });
         }
 
+
         [HttpGet("TimeBound")]
         public async Task<IActionResult> GetTimeBound() {
             var protectorTimeBound = _protector.ToTimeLimitedDataProtector();
